@@ -20,7 +20,7 @@ const Login: React.FC = () => {
                 console.log("✅ Успішний вхід:", response.data);
                 localStorage.setItem("token", response.data.access_token);
                 alert("Вхід успішний!");
-                navigate("/chat/:roomId");
+                navigate("/chat/room1");
             })
             .catch(error => {
                 console.error("❌ Помилка авторизації", error.response?.data || error.message);

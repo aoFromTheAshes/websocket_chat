@@ -1,14 +1,14 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session, select
 from typing import List
-from ..auth.auth import get_current_user_token
+from ..auth.auth import get_current_user_token_from_ws
 from ..database import get_db
 from ..models.room import Room
 
 router = APIRouter(prefix="/rooms", tags=["Rooms"])
 
 @router.post("/", status_code=201)
-def create_room(name: str, session: Session = Depends(get_db), username: str = Depends(get_current_user_token)):
+def create_room(name: str, session: Session = Depends(get_db), username: str = Depends(get_current_user_token_from_ws)):
     existing_room = session.exec(select(Room).where(Room.name == name)).first()
     if existing_room:
         raise HTTPException(status_code=400, detail="Room already exists")
@@ -25,7 +25,7 @@ def get_all_rooms(session: Session = Depends(get_db)):
     return rooms
 
 @router.delete("/{room_id}")
-def delete_room(room_id: str, session: Session = Depends(get_db), username: str = Depends(get_current_user_token)):
+def delete_room(room_id: str, session: Session = Depends(get_db), username: str = Depends(get_current_user_token_from_ws)):
     room = session.get(Room, room_id)
     if not room:
         raise HTTPException(status_code=404, detail="Room not found")

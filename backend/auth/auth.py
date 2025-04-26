@@ -26,12 +26,17 @@ def verify_token(token: str):
         return None
     
 # 👇 Функція для декодування токена
-async def get_current_user_token(token: str = Query(...)):
+async def get_current_user_token_from_ws(token: str) -> str:
     try:
+        print("🔐 Перевірка токена:", token)
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        print("🎯 Payload:", payload)
         username: str = payload.get("sub")
         if username is None:
+            print("⛔️ sub відсутній у payload")
             raise WebSocketException(code=status.WS_1008_POLICY_VIOLATION)
+        print("✅ Ім'я користувача:", username)
         return username
-    except JWTError:
+    except JWTError as e:
+        print("❌ JWT помилка:", e)
         raise WebSocketException(code=status.WS_1008_POLICY_VIOLATION)
