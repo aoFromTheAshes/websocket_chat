@@ -110,7 +110,7 @@ const Chat = () => {
       <h2>Chat Room: {roomId}</h2>
 
       <div>
-        <label>👤 Ваше ім’я:</label>
+        <label>👤 Your name: </label>
         <input value={username} onChange={(e) => setUsername(e.target.value)} />
         <span style={{ marginLeft: "10px", color: connected ? "green" : "red" }}>
           {connected ? "Connected" : "Disconnected"}
@@ -118,7 +118,7 @@ const Chat = () => {
       </div>
 
       <div>
-        <h3>Активні користувачі:</h3>
+        <h3>Active users:</h3>
         <ul>
           {activeUsers.map((user) => (
             <li key={user}>{user}</li>
